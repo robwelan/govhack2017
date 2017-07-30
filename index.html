@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fun Facts About Fatalities</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css" integrity="sha256-mkKV3FUh67dtli09bVbaYyM1526XgR92cz1uKarE1jo="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="css/custom-charts.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Dashboard of Fatalities Across Australia</h1>
+        <div class="row">
+            <div class="col s12 m6">
+                <p>
+                    Choose your state from the select box over on the right. This dashboard will show all states if nothing is selected.
+                </p>
+            </div>
+            <div class="col s12 m6">
+                <div class="input-field col s12">
+                    <select id="select-state">
+                        <option value="*" selected>Australia Wide</option>
+                        <option value="ACT">Australian Capital Territory</option>
+                        <option value="NSW">New South Wales</option>
+                        <option value="NT">Northern Territory</option>
+                        <option value="QLD">Queensland</option>
+                        <option value="SA">South Australia</option>
+                        <option value="TAS">Tasmania</option>
+                        <option value="VIC">Victoria</option>
+                        <option value="WA">Western Australia</option>
+                    </select>
+                    <label>Choose A State Or Territory</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <hr>
+            </div>
+            <div class="col s12 m6">
+                <div class="chart-container">
+                    <div class="chart1"></div>
+                    <p>Average Age of Fatality</p>
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="chart2"></div>
+                <p>Fatalities Per Month</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <script src="json/Fatal_Crashes_June_2017.json"></script>
+    <script src="json/Fatalities_June_2017.json"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/custom-charts.js"></script>
+</body>
+
+</html>
