@@ -1,24 +1,60 @@
-$(document).ready(function() {
+$(document).ready(function () {
   var dSet = [];
   var dCrashes = [];
   var sSelectedState = $("#select-state").val();
+  var nSelectedYear = Number($("#select-year").val());
+
   setAndGo();
-  $("#select-state").on("change", function() {
+
+  $("#select-state").on("change", function () {
     sSelectedState = $("#select-state").val();
+
+    if (sSelectedState === "") {
+      sSelectedState = "*";
+    }
+
+    setAndGo();
+  });
+
+  $("#select-year").on("change", function () {
+    nSelectedYear = Number($("#select-year").val());
+
+    if (nSelectedYear === "" || nSelectedYear === 0) {
+      nSelectedYear = Date.getYear();
+    }
+
     setAndGo();
   });
 
   function setAndGo() {
     if (sSelectedState !== "*") {
-      dSet = dataFatalities.filter(function(d) {
-        return d.State == sSelectedState;
+      dSet = dataFatalities.filter(function (d) {
+        //       return d.State == sSelectedState;
+        if ((d["State"] == sSelectedState) && (d["Year"] == nSelectedYear)) {
+          return d;
+        }
       });
-      dCrashes = dataFatalCrashes.filter(function(d) {
-        return d.State == sSelectedState;
+      dCrashes = dataFatalCrashes.filter(function (d) {
+        //  return d.State == sSelectedState;
+        if ((d["State"] == sSelectedState) && (d["Year"] == nSelectedYear)) {
+          return d;
+        }
       });
     } else {
-      dSet = dataFatalities;
-      dCrashes = dataFatalCrashes;
+      //  dSet = dataFatalities;
+      dSet = dataFatalities.filter(function (d) {
+        //       return d.State == sSelectedState;
+        if (d["Year"] == nSelectedYear) {
+          return d;
+        }
+      });
+      //  dCrashes = dataFatalCrashes;
+      dCrashes = dataFatalCrashes.filter(function (d) {
+        //  return d.State == sSelectedState;
+        if (d["Year"] == nSelectedYear) {
+          return d;
+        }
+      });
     }
     generateGraphs();
   }
@@ -38,7 +74,7 @@ $(document).ready(function() {
 
     // Get length of dataset
     var arrayLength = data.length; // length of dataset
-    var maxValue = d3.max(data, function(d) {
+    var maxValue = d3.max(data, function (d) {
       return +d.value;
     }); // get maximum
     var x_axisLength = 100; // length of x-axis in our layout
@@ -63,29 +99,29 @@ $(document).ready(function() {
       .data(data)
       .enter()
       .append("rect")
-      .attr("x", function(d, i) {
+      .attr("x", function (d, i) {
         return i * (x_axisLength / arrayLength) + 30; // Set x coordinate of rectangle to index of data value (i) *25
       })
-      .attr("y", function(d) {
+      .attr("y", function (d) {
         return h - yScale(d.value); // Set y coordinate of rect using the y scale
       })
       .attr("width", x_axisLength / arrayLength - 1)
-      .attr("height", function(d) {
+      .attr("height", function (d) {
         return yScale(d.value); // Set height of using the scale
       })
       .attr("fill", "steelblue")
-      .on("mouseover", function(d) {
+      .on("mouseover", function (d) {
         return tooltip
           .style("visibility", "visible")
           .text(d.key + ": " + d.value);
       })
-      .on("mousemove", function(d) {
+      .on("mousemove", function (d) {
         return tooltip
           .style("top", event.pageY - 10 + "px")
           .style("left", event.pageX + 10 + "px")
           .text(d.key + ": " + d.value);
       })
-      .on("mouseout", function(d) {
+      .on("mouseout", function (d) {
         return tooltip.style("visibility", "hidden");
       });
 
@@ -125,12 +161,12 @@ $(document).ready(function() {
 
     var dAverageAge = d3
       .nest()
-      .key(function(d) {
+      .key(function (d) {
         return d.Crash_Type;
       })
-      .rollup(function(v) {
+      .rollup(function (v) {
         return Math.ceil(
-          d3.mean(v, function(d) {
+          d3.mean(v, function (d) {
             return d.Age;
           })
         );
@@ -140,12 +176,12 @@ $(document).ready(function() {
 
     var dFatalitiesByMonth = d3
       .nest()
-      .key(function(d) {
+      .key(function (d) {
         return d.Month;
       })
-      .rollup(function(v) {
+      .rollup(function (v) {
         return Math.ceil(
-          d3.sum(v, function(d) {
+          d3.sum(v, function (d) {
             return d.Number_of_Fatalities;
           })
         );
@@ -167,7 +203,7 @@ $(document).ready(function() {
         "November",
         "December"
       ];
-      arr.sort(function(a, b) {
+      arr.sort(function (a, b) {
         return months.indexOf(a.key) - months.indexOf(b.key);
       });
     }
